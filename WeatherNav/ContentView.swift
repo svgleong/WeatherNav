@@ -10,7 +10,8 @@ import SwiftUI
 struct ContentView: View {
     @State private var searchText = ""
     @State private var showingSheet = false
-    @StateObject private var viewModel = ViewModel()
+    @ObservedObject private var viewModel = ViewModel()
+    
     
     var body: some View {
         NavigationStack {
@@ -22,9 +23,17 @@ struct ContentView: View {
                     VStack {
                         // Search Bar
                         TextField("Search", text: $searchText)
+                            .foregroundColor(.gray)
                             .padding(10)
                             .background(Color.white.opacity(0.8))
                             .cornerRadius(30)
+                            .onSubmit {
+                                let currentSearchText = searchText
+                                Task {
+                                    await viewModel.fetchWeatherData(_: currentSearchText)
+                                }
+                                searchText = ""
+                            }
                         
                         // Clickable to show more info about the city
                         Button(action: {
@@ -43,7 +52,7 @@ struct ContentView: View {
                         })
                         .buttonStyle(PlainButtonStyle())
                         .sheet(isPresented: $showingSheet, content: {
-                            DetailView()
+                            DetailView(weatherData: viewModel.weatherData!)
                         })
                         
                         ScrollView(showsIndicators: false) {
@@ -55,11 +64,10 @@ struct ContentView: View {
                     .padding([.leading, .trailing], 10)
                 }
             }
-//            .fontDesign(.default)
             .foregroundColor(.white)
             .bold()
             .task {
-                await viewModel.fetchWeatherData()
+                await viewModel.fetchWeatherData(searchText)
             }
         }
     }
@@ -105,7 +113,3 @@ struct DayForecast: View {
 #Preview {
     ContentView()
 }
-
-// http://api.openweathermap.org/geo/1.0/direct?q=lisbon&&appid=7387b76e9dd3fb79c023720b2c4fe133
-
-//api.openweathermap.org/data/2.5/forecast?lat=38.7077507&lon=-9.1365919&appid=7387b76e9dd3fb79c023720b2c4fe133

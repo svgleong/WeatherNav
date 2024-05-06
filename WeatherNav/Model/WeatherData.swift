@@ -8,6 +8,7 @@
 import Foundation
 
 struct WeatherData: Decodable {
+    let cod: String
     let cnt: Int
     let list: [ListDetail]
     let city: City
@@ -17,6 +18,7 @@ struct ListDetail: Decodable {
     let main: MainDetail
     let weather: [Weather]
     let wind: Wind
+    let pop: Double
     let dt_txt: String
 }
 
@@ -24,6 +26,7 @@ struct MainDetail: Decodable {
     let temp: Double
     let feels_like: Double
     let temp_min: Double
+    let temp_max: Double
     let humidity: Int
 }
 
