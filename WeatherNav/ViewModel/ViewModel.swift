@@ -72,7 +72,7 @@ struct Day {
 class ViewModel: ObservableObject {
     @Published var weatherData: ReadyData?
 
-    let appid: String = "YOUR_API_KEY"
+    let appid: String = "91d65d03e63bb6c97a4423a1a0a159b0"
     
     var city: String {
         weatherData?.city ?? ""
