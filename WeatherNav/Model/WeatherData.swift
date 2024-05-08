@@ -7,9 +7,9 @@
 
 import Foundation
 
+// JSON schema
 struct WeatherData: Decodable {
     let cod: String
-    let cnt: Int
     let list: [ListDetail]
     let city: City
 }

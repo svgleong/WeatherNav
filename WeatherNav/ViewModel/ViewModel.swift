@@ -8,71 +8,14 @@
 import Foundation
 import SwiftUI
 
-struct ReadyData {
-    var city: String
-    let description: String
-    let tempHeader: Double
-    let lat: Double
-    let lon: Double
-    let feelsLike: String
-    let windSpeed: String
-    let humidity: String
-    let rainProb: String
-    
-    var days: [Day]
-    
-    var tempString: String {
-        return String(format: "%.1f", tempHeader)
-    }
-    
-    func getHour(_ list: ListDetail) -> String {
-        return String(list.dt_txt.dropFirst(11).prefix(2))
-    }
-    
-    func getTemperature(_ list: ListDetail) -> String {
-        String(format: "%.0f", list.main.temp) + "ºC"
-    }
-    
-    func getIcon(_ list: ListDetail) -> String {
-        let icon = list.weather[0].icon
-
-        switch icon {
-        case "01d":
-            return "sun.max.fill"
-        case "01n":
-            return "moon.fill"
-        case "02d":
-            return "cloud.sun.fill"
-        case "02n":
-            return "cloud.moon.fill"
-        case "03d":
-            return "cloud.fill"
-        case "09d", "09n":
-            return "cloud.rain.fill"
-        case "10d":
-            return "cloud.sun.rain.fill"
-        case "10n":
-            return "cloud.moon.rain.fill"
-        case "11d", "11n":
-            return "cloud.bolt.fill"
-        case "13d", "13n":
-            return "snowflake"
-        case "50d", "50n":
-            return "cloud.fog.fill"
-        default:
-            return "cloud.fill"
-        }
-    }
-}
-
-struct Day {
-    var hours: [ListDetail]
-}
-
 class ViewModel: ObservableObject {
+    @Published var searchText = ""
+    @Published var showingSheet = false
     @Published var weatherData: ReadyData?
+    var hasFailed = false
 
-    let appid: String = "YOUR_API_KEY"
+//    let appid: String = "YOUR_API_KEY"
+    let appid: String = "91d65d03e63bb6c97a4423a1a0a159b0"
     
     var city: String {
         weatherData?.city ?? ""
@@ -89,8 +32,12 @@ class ViewModel: ObservableObject {
     func getDay(_ i: Int) -> Day {
         weatherData!.days[i]
     }
+    
+    var currentSearchText: String {
+        searchText
+    }
 
-//    @MainActor
+    @MainActor
     func fetchWeatherData(_ searchField: String) async {
         var city = searchField
         if city.isEmpty {
@@ -104,21 +51,20 @@ class ViewModel: ObservableObject {
         
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
-            print("JSON Data: \(String(data: data, encoding: .utf8) ?? "Unable to decode data")")
 
             let decodedData = try JSONDecoder().decode(WeatherData.self, from: data)
             if (decodedData.cod == "200") {
-                Task {
-                    await MainActor.run {
-                        weatherData = parseData(decodedData)
-                    }
-                }
+                weatherData = parseData(decodedData)
+                searchText = ""
             }
             else {
                 print("Error: Response status code is not 200")
+                hasFailed = true
             }
         } catch {
             print("Error decoding weather data: \(error)")
+            hasFailed = true
+            searchText = ""
         }
     }
     
@@ -146,7 +92,7 @@ class ViewModel: ObservableObject {
         var rainProb: String {
             let prob = weatherData.list[0].pop
             let percentage = prob * 100
-            return String(percentage) + "%"
+            return String(format: "%.0f", percentage) + "%"
         }
         
         var days: [Day] = []
@@ -198,4 +144,9 @@ class ViewModel: ObservableObject {
         }
         return ""
     }
+    
+    func loadData() async {
+        await fetchWeatherData(currentSearchText)
+    }
 }
+
