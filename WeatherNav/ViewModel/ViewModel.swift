@@ -14,8 +14,11 @@ class ViewModel: ObservableObject {
     @Published var weatherData: ReadyData?
     var hasFailed = false
 
+<<<<<<< HEAD
 //    let appid: String = "YOUR_API_KEY"
-    let appid: String = "91d65d03e63bb6c97a4423a1a0a159b0"
+=======
+>>>>>>> f20e376a38b54ce8967250da130eb2aa0ba53356
+    
     
     var city: String {
         weatherData?.city ?? ""
