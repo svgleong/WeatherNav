@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		C98DAD882BEA7C100090AA1B /* ReadyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98DAD872BEA7C100090AA1B /* ReadyData.swift */; };
 		C98DAD8A2BEA88600090AA1B /* MainForecastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98DAD892BEA88600090AA1B /* MainForecastView.swift */; };
+		C98DAD8F2BEB95D80090AA1B /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98DAD8E2BEB95D80090AA1B /* DataController.swift */; };
+		C98DAD922BEB9DBA0090AA1B /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C98DAD902BEB9DBA0090AA1B /* Model.xcdatamodeld */; };
+		C991AD6E2BF224D200728DDB /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C991AD6D2BF224D200728DDB /* HistoryView.swift */; };
 		C9C66E322BE3998F0035C68C /* WeatherNavApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C66E312BE3998F0035C68C /* WeatherNavApp.swift */; };
 		C9C66E342BE3998F0035C68C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C66E332BE3998F0035C68C /* ContentView.swift */; };
 		C9C66E362BE399930035C68C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9C66E352BE399930035C68C /* Assets.xcassets */; };
@@ -22,6 +25,9 @@
 /* Begin PBXFileReference section */
 		C98DAD872BEA7C100090AA1B /* ReadyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyData.swift; sourceTree = "<group>"; };
 		C98DAD892BEA88600090AA1B /* MainForecastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainForecastView.swift; sourceTree = "<group>"; };
+		C98DAD8E2BEB95D80090AA1B /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		C98DAD912BEB9DBA0090AA1B /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		C991AD6D2BF224D200728DDB /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		C9C66E2E2BE3998F0035C68C /* WeatherNav.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherNav.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9C66E312BE3998F0035C68C /* WeatherNavApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherNavApp.swift; sourceTree = "<group>"; };
 		C9C66E332BE3998F0035C68C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -50,6 +56,7 @@
 				C9C66E3F2BE3DB630035C68C /* DetailView.swift */,
 				C9C66E332BE3998F0035C68C /* ContentView.swift */,
 				C98DAD892BEA88600090AA1B /* MainForecastView.swift */,
+				C991AD6D2BF224D200728DDB /* HistoryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -95,8 +102,10 @@
 		C9C66E422BE3F0780035C68C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C98DAD902BEB9DBA0090AA1B /* Model.xcdatamodeld */,
 				C9C66E452BE3FC870035C68C /* WeatherData.swift */,
 				C98DAD872BEA7C100090AA1B /* ReadyData.swift */,
+				C98DAD8E2BEB95D80090AA1B /* DataController.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -183,8 +192,11 @@
 				C9C66E4C2BE401580035C68C /* ViewModel.swift in Sources */,
 				C9C66E342BE3998F0035C68C /* ContentView.swift in Sources */,
 				C9C66E402BE3DB630035C68C /* DetailView.swift in Sources */,
+				C98DAD8F2BEB95D80090AA1B /* DataController.swift in Sources */,
 				C9C66E462BE3FC870035C68C /* WeatherData.swift in Sources */,
+				C98DAD922BEB9DBA0090AA1B /* Model.xcdatamodeld in Sources */,
 				C9C66E322BE3998F0035C68C /* WeatherNavApp.swift in Sources */,
+				C991AD6E2BF224D200728DDB /* HistoryView.swift in Sources */,
 				C98DAD882BEA7C100090AA1B /* ReadyData.swift in Sources */,
 				C98DAD8A2BEA88600090AA1B /* MainForecastView.swift in Sources */,
 			);
@@ -390,6 +402,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C98DAD902BEB9DBA0090AA1B /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C98DAD912BEB9DBA0090AA1B /* Model.xcdatamodel */,
+			);
+			currentVersion = C98DAD912BEB9DBA0090AA1B /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = C9C66E262BE3998F0035C68C /* Project object */;
 }

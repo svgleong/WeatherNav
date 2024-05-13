@@ -13,11 +13,11 @@ class ViewModel: ObservableObject {
     @Published var showingSheet = false
     @Published var weatherData: ReadyData?
     var hasFailed = false
+    
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: []) var history: FetchedResults<CityDM>
 
-<<<<<<< HEAD
-//    let appid: String = "YOUR_API_KEY"
-=======
->>>>>>> f20e376a38b54ce8967250da130eb2aa0ba53356
+    let appid: String = "YOUR_API_KEY"
     
     
     var city: String {
@@ -58,6 +58,7 @@ class ViewModel: ObservableObject {
             let decodedData = try JSONDecoder().decode(WeatherData.self, from: data)
             if (decodedData.cod == "200") {
                 weatherData = parseData(decodedData)
+                saveCity(data: weatherData!)
                 searchText = ""
             }
             else {
@@ -153,3 +154,25 @@ class ViewModel: ObservableObject {
     }
 }
 
+//MARK: - CoreData functions
+
+extension ViewModel {
+    func saveCity(data: ReadyData) {
+        let newCity = CityDM(context: moc)
+        
+        newCity.city = data.city
+        newCity.descrip = data.description
+        newCity.tempHeader = data.tempHeader
+        newCity.lat = data.lat
+        newCity.lon = data.lon
+        newCity.feelsLike = data.feelsLike
+        newCity.windSpeed = data.windSpeed
+        newCity.humidity = data.humidity
+        newCity.rainProb = data.rainProb
+        // Convert array of Day objects to an NSSet
+        let daySet = NSSet(array: data.days)
+        newCity.days = daySet
+        
+        try? moc.save()
+    }
+}

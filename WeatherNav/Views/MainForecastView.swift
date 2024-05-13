@@ -12,17 +12,24 @@ struct MainForecastView: View {
     
     var body: some View {
         VStack {
-            // Search Bar
-            TextField("Search", text: $viewModel.searchText)
-                .foregroundColor(.gray)
-                .padding(10)
-                .background(Color.white.opacity(0.8))
-                .cornerRadius(30)
-                .onSubmit {
-                    Task {
-                        await viewModel.loadData()
+            // Search Bar and history button
+            HStack {
+                TextField("Search", text: $viewModel.searchText)
+                    .foregroundColor(.gray)
+                    .padding(10)
+                    .background(Color.white.opacity(0.8))
+                    .cornerRadius(30)
+                    .onSubmit {
+                        Task {
+                            await viewModel.loadData()
+                        }
                     }
+                
+                NavigationLink(destination: HistoryView(viewModel: viewModel)) {
+                    Image(systemName: "clock.fill")
+                        .padding(5)
                 }
+            }
             
             // Clickable to show more info about the city
             Button(action: {
