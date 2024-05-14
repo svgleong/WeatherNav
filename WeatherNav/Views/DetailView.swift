@@ -107,7 +107,7 @@ struct LightSquare: ViewModifier {
 }
 
 #Preview {
-    let data = ReadyData(city: "Lisboa", description: "Sunny", tempHeader: 16, lat: 38.7077507, lon: -9.1365919, feelsLike: "16ºC", windSpeed: "4.5 m/sec", humidity: "70%", rainProb: "30%", days: [])
+    let data = ReadyData(city: "Lisboa", description: "Sunny", tempHeader: 16, lat: 38.7077507, lon: -9.1365919, feelsLike: "16ºC", windSpeed: "4.5 m/sec", humidity: "70%", rainProb: "30%", country: "PT", days: [])
     return DetailView(weatherData: data)
 //    DetailView()
 }

@@ -17,6 +17,7 @@ struct ReadyData {
     let windSpeed: String
     let humidity: String
     let rainProb: String
+    let country: String
     
     var days: [Day]
     
@@ -66,4 +67,13 @@ struct ReadyData {
 
 struct Day {
     var hours: [ListDetail]
+}
+
+//MARK: - City info for when connection fails
+struct CityInfo: Identifiable, Hashable {
+    let id = UUID()
+    let name: String
+    let country: String
+    let lat: Double
+    let lon: Double
 }

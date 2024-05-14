@@ -9,12 +9,13 @@ import SwiftUI
 
 @main
 struct WeatherNavApp: App {
-    @StateObject private var dataController = DataController()
+
+    let moc = DataController.shared.container.viewContext
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.managedObjectContext, dataController.container.viewContext)
+                .environment(\.managedObjectContext, moc)
         }
     }
 }

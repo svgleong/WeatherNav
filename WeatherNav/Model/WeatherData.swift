@@ -43,6 +43,7 @@ struct Wind: Decodable {
 struct City: Decodable {
     let name: String
     let coord: Coordinates
+    let country: String
 }
 
 struct Coordinates: Decodable {

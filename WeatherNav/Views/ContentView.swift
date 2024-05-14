@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject private var viewModel = ViewModel()
+    @Environment(\.managedObjectContext) var moc
     
     var body: some View {
         NavigationStack {
@@ -21,6 +22,12 @@ struct ContentView: View {
                 } else {
                     ProgressView()
                         .controlSize(.large)
+                        .navigationBarItems(trailing:
+                            NavigationLink(destination: HistoryView()) {
+                                Image(systemName: "clock.fill")
+                                    .padding(5)
+                            }
+                        )
                 }
             }
             .foregroundColor(.white)

@@ -10,20 +10,33 @@ import CoreData
 
 class DataController: ObservableObject {
     
-    let container = NSPersistentContainer(name: "Model")
+    let container: NSPersistentContainer
     
-    init() {
-        guard let modelURL = Bundle(for: type(of: self)).url(forResource: "Model", withExtension:"momd") else {
+    // Singleton
+    static let shared = DataController()
+    
+    private init() {
+        container = NSPersistentContainer(name: "WeatherModel")
+        
+        guard Bundle(for: type(of: self)).url(forResource: "WeatherModel", withExtension:"momd") != nil else {
             fatalError("Error loading model from bundle")
         }
-        //let mainBundle = Bundle(for: DataController.self)
-        //let paths = mainBundle.paths(forResourcesOfType: nil, inDirectory: nil)
-        //print("Bundle contents: \(paths)")
-        
         
         container.loadPersistentStores { description, error in
             if let error = error {
                 print("Core Data failed to load: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func save() {
+        let context = container.viewContext
+
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                fatalError("Unable to save changes: \(error.localizedDescription)")
             }
         }
     }

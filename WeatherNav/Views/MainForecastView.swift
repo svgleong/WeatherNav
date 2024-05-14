@@ -25,7 +25,7 @@ struct MainForecastView: View {
                         }
                     }
                 
-                NavigationLink(destination: HistoryView(viewModel: viewModel)) {
+                NavigationLink(destination: HistoryView()) {
                     Image(systemName: "clock.fill")
                         .padding(5)
                 }
@@ -60,7 +60,9 @@ struct MainForecastView: View {
         }
         .padding([.leading, .trailing], 10)
         .alert(isPresented: $viewModel.hasFailed) {
-            Alert(title: Text("Error"), message: Text("An error occured fetching the weather for that city! Please try again"), dismissButton: .default(Text("Got it!")))
+            Alert(title: Text("Error"), 
+                  message: Text("An error occured fetching the weather for that city! Please try again"),
+                  dismissButton: .default(Text("Got it!")))
         }
     }
 }

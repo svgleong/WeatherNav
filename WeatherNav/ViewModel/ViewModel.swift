@@ -7,18 +7,16 @@
 
 import Foundation
 import SwiftUI
+import CoreData
+import SystemConfiguration
 
 class ViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var showingSheet = false
-    @Published var weatherData: ReadyData?
+    @Published var weatherData: ReadyData? 
     var hasFailed = false
-    
-    @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: []) var history: FetchedResults<CityDM>
 
     let appid: String = "YOUR_API_KEY"
-    
     
     var city: String {
         weatherData?.city ?? ""
@@ -79,6 +77,7 @@ class ViewModel: ObservableObject {
         let temp = weatherData.list[0].main.temp
         let lat = weatherData.city.coord.lat
         let lon = weatherData.city.coord.lon
+        let country = weatherData.city.country
         
         var feelsLike: String {
             let string = String(format: "%.1f", weatherData.list[0].main.feels_like)
@@ -117,7 +116,6 @@ class ViewModel: ObservableObject {
             }
         }
         
-        
         let data = ReadyData(
             city: city,
             description: description,
@@ -128,6 +126,7 @@ class ViewModel: ObservableObject {
             windSpeed: windSpeed,
             humidity: humidity,
             rainProb: rainProb,
+            country: country,
             days: days
         )
         return data
@@ -158,21 +157,27 @@ class ViewModel: ObservableObject {
 
 extension ViewModel {
     func saveCity(data: ReadyData) {
-        let newCity = CityDM(context: moc)
+        let moc = DataController.shared.container.viewContext
         
-        newCity.city = data.city
-        newCity.descrip = data.description
-        newCity.tempHeader = data.tempHeader
-        newCity.lat = data.lat
-        newCity.lon = data.lon
-        newCity.feelsLike = data.feelsLike
-        newCity.windSpeed = data.windSpeed
-        newCity.humidity = data.humidity
-        newCity.rainProb = data.rainProb
-        // Convert array of Day objects to an NSSet
-        let daySet = NSSet(array: data.days)
-        newCity.days = daySet
+        let fetchRequest: NSFetchRequest<CityEntity> = CityEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "cityName == %@", data.city)
         
-        try? moc.save()
+        do {
+            let savedCities = try moc.fetch(fetchRequest)
+            
+            // Only saves if there is no city with the same name
+            if savedCities.isEmpty {
+                let newCity = CityEntity(context: moc)
+                
+                newCity.cityName = data.city
+                newCity.country = data.country
+                newCity.lat = data.lat
+                newCity.lon = data.lon
+                try moc.save()
+                print("City saved successfully!")
+            }
+        } catch {
+            print("Error saving city: \(error)")
+        }
     }
 }

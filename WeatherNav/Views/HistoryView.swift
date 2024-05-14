@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct HistoryView: View {
-    @ObservedObject var viewModel: ViewModel
+    
+    @ObservedObject private var viewModel = HistoryViewModel()
+    @FetchRequest(sortDescriptors: []) var history: FetchedResults<CityEntity>
     
     var body: some View {
         ZStack {
@@ -17,7 +19,19 @@ struct HistoryView: View {
                 .opacity(0.6)
                 .edgesIgnoringSafeArea(.all)
             
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            VStack {
+                List(viewModel.cities, id: \.self) { city in
+                    NavigationLink("\(city.name)", destination: CityDetailView(city: city))
+                }
+            }
+            .scrollContentBackground(.hidden)
+        }
+        .onAppear() {
+            viewModel.loadData(history)
         }
     }
+}
+
+#Preview {
+    HistoryView()
 }
