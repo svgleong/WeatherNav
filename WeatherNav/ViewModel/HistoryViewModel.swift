@@ -23,6 +23,5 @@ class HistoryViewModel: ObservableObject {
                          lat: city.lat,
                          lon: city.lon))
         }
-        print(cities)
     }
 }

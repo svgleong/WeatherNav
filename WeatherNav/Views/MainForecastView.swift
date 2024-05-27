@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainForecastView: View {
     @ObservedObject var viewModel: ViewModel
+    var weatherData: ReadyData
     
     var body: some View {
         VStack {
@@ -36,11 +37,11 @@ struct MainForecastView: View {
                 viewModel.showingSheet.toggle()
             }, label: {
                 VStack {
-                    Text(viewModel.city)
+                    Text(weatherData.city)
                         .font(.system(size: 40))
-                    Text(viewModel.description)
+                    Text(weatherData.description)
                         .font(.title3)
-                    Text(viewModel.temperature)
+                    Text(weatherData.temperature)
                 }
                 .padding([.top, .bottom], 10)
                 .shadow(color: Color.black.opacity(0.2), radius: 2, x: 0, y: 2)
@@ -48,13 +49,13 @@ struct MainForecastView: View {
             })
             .buttonStyle(PlainButtonStyle())
             .sheet(isPresented: $viewModel.showingSheet, content: {
-                DetailView(weatherData: viewModel.weatherData!)
+                DetailView(weatherData: weatherData)
             })
             
             // Section for each day
             ScrollView(showsIndicators: false) {
                 ForEach(0..<5, id: \.self) { i in
-                    DayForecast(data: viewModel.weatherData!, i: i, date: viewModel.getDate(i))
+                    DayForecast(data: weatherData, i: i, date: weatherData.getDate(i))
                 }
             }
         }

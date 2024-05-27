@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject private var viewModel = ViewModel()
+    @ObservedObject private var viewModel: ViewModel
     @Environment(\.managedObjectContext) var moc
+    
+    init(viewModel: ViewModel) {
+        self._viewModel = ObservedObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         NavigationStack {
@@ -17,28 +21,31 @@ struct ContentView: View {
                 LinearGradient(gradient: Gradient(colors: [.yellow, .teal, .cyan]), startPoint: .top, endPoint: .bottom)
                     .opacity(0.6)
                     .edgesIgnoringSafeArea(.all)
-                if viewModel.weatherData != nil {
-                    MainForecastView(viewModel: viewModel)
-                } else {
-                    ProgressView()
-                        .controlSize(.large)
-                        .navigationBarItems(trailing:
-                            NavigationLink(destination: HistoryView()) {
-                                Image(systemName: "clock.fill")
-                                    .padding(5)
-                            }
-                        )
+                VStack {
+                    switch viewModel.state {
+                    case .loading:
+                        LoadingView()
+                    case .failure:
+                        FailureView(viewModel: viewModel)
+                    case let .cachedFailure(model):
+                        MainForecastView(viewModel: viewModel, weatherData: model)
+                    case let .success(model):
+                        MainForecastView(viewModel: viewModel, weatherData: model)
+                    }
                 }
-            }
-            .foregroundColor(.white)
-            .bold()
-            .task {
-                await viewModel.loadData()
+                .foregroundColor(.white)
+                .bold()
+                .task {
+                    await viewModel.loadData()
+                }
             }
         }
     }
 }
 
 #Preview {
-    ContentView()
+    var client: WeatherAPIClient { WeatherAPIClient(session: URLSession.shared) }
+    var service: WeatherService { WeatherService(client: client) }
+    var viewModel: ViewModel { ViewModel(service: service) }
+    return ContentView(viewModel: viewModel)
 }
