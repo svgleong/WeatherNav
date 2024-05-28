@@ -33,6 +33,6 @@ struct FailureView: View {
 #Preview {
     var client: WeatherAPIClient { WeatherAPIClient(session: URLSession.shared) }
     var service: WeatherService { WeatherService(client: client) }
-    var viewModel: ViewModel { ViewModel(service: service) }
+    var viewModel: ViewModel { ViewModel(service: service, repo: CityRepo()) }
     return FailureView(viewModel: viewModel)
 }

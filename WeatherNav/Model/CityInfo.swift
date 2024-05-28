@@ -8,7 +8,6 @@
 import Foundation
 
 //MARK: - City info for when connection fails
-
 struct CityInfo: Identifiable, Hashable {
     let id = UUID()
     let name: String

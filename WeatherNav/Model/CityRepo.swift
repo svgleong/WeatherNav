@@ -8,8 +8,7 @@
 import CoreData
 
 //MARK: - Repo to save cities
-
-class CityRepo {
+struct CityRepo {
     func saveCity(data: ReadyData) {
         let moc = DataController.shared.container.viewContext
         

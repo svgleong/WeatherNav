@@ -13,7 +13,7 @@ struct WeatherNavApp: App {
     let moc = DataController.shared.container.viewContext
     var client: WeatherAPIClient { WeatherAPIClient(session: URLSession.shared) }
     var service: WeatherService { WeatherService(client: client) }
-    var viewModel: ViewModel { ViewModel(service: service) }
+    var viewModel: ViewModel { ViewModel(service: service, repo: CityRepo()) }
 
     var body: some Scene {
         WindowGroup {

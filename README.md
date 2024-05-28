@@ -5,5 +5,3 @@ display the daily weather forecast every 3 hours for the next five days for a sp
 Clicking on the city gives the user a detailed view of the city's weather information, 
 including a map view with a pin on the city's coordinates. The search bar gives the user the
 possibility to search for weather information for any city.
-
-(This project is still a work in progress :D)

@@ -35,9 +35,6 @@ struct ContentView: View {
                 }
                 .foregroundColor(.white)
                 .bold()
-                .task {
-                    await viewModel.loadData()
-                }
             }
         }
     }
@@ -46,6 +43,6 @@ struct ContentView: View {
 #Preview {
     var client: WeatherAPIClient { WeatherAPIClient(session: URLSession.shared) }
     var service: WeatherService { WeatherService(client: client) }
-    var viewModel: ViewModel { ViewModel(service: service) }
+    var viewModel: ViewModel { ViewModel(service: service, repo: CityRepo()) }
     return ContentView(viewModel: viewModel)
 }

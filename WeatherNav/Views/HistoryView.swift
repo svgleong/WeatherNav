@@ -22,10 +22,15 @@ struct HistoryView: View {
             VStack {
                 List(viewModel.cities, id: \.self) { city in
                     NavigationLink("\(city.name)", destination: CityDetailView(city: city))
+                        .listRowBackground(Color.white.opacity(0.2))
+                        .shadow(color: Color.black.opacity(0.2), radius: 2, x: 0, y: 2)
                 }
             }
             .scrollContentBackground(.hidden)
         }
+        .foregroundColor(.white)
+        .font(.system(size: 20))
+        .bold()
         .onAppear() {
             viewModel.loadData(history)
         }
